@@ -95,6 +95,20 @@ public class ProductController {
         productDao.save(product);
     }
 
+    //Pour calculer la marge de chaque produits
+    @GetMapping( value="/AdminProduits")
+    public HashMap<Product, Integer>  calculerMargeProduit(){
+        HashMap<Product, Integer> map = new HashMap<Product, Integer>();
+
+        Iterable<Product> produits = productDao.findAll();
+
+        for( Product p: produits ){
+            int marge = p.getPrix() - p.getPrixAchat();
+            map.put( p, marge );
+        }
+
+        return map;
+    }
 
     //Pour les tests
     @GetMapping(value = "test/produits/{prix}")
@@ -102,7 +116,5 @@ public class ProductController {
 
         return productDao.chercherUnProduitCher(400);
     }
-
-
 
 }
